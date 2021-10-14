@@ -6,4 +6,4 @@ function Footer() {
   );
 }
 
-export default footer;
+export default Footer;
