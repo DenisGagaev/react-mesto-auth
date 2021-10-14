@@ -11,7 +11,7 @@ function Card(props) {
   return (
 
     <article className="element">
-      <img className="element__image" src={card.link} alt={card.name} onClick={handleClick}/>
+      <img className="element__image" src={card.link} alt={card.name} onClick={handleClick} />
       <div className="element__info">
         <h2 className="element__text">{card.name}</h2>
         <div className="element__like-container">
@@ -20,7 +20,7 @@ function Card(props) {
         </div>
         <button className="elements__delete" type="button"></button>
       </div>
-      </article>
+    </article>
   );
 }
 

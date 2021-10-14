@@ -1,6 +1,6 @@
 import React from "react";
 import api from "../utils/Api";
-import Card from "./card";
+import Card from "./Card";
 
 function Main(props) {
   const [userAvatar, setUserAvatar] = React.useState('#');
