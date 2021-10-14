@@ -1,0 +1,26 @@
+.profile__addfoto-button {
+    background: url(../../../images/croos.svg) no-repeat;
+    background-size: 22px 22px;
+    background-position: center;
+    width: 150px;
+    height: 50px;
+    outline: none;
+    border: 2px solid #fff;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: opacity .2s linear;
+    margin-left: 15px;
+}
+
+.profile__addfoto-button:hover {
+    opacity: 0.6;
+}
+
+@media (max-width: 680px) {
+    .profile__addfoto-button {
+        margin-left: 0;
+        width: 100%;
+        max-width: 300px;
+        background-size: 16px 16px;
+    }
+}
