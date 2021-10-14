@@ -5,12 +5,15 @@ import Footer from './footer';
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from './ImagePopup';
 
-
-
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({isOpen: false, element: {}});
+
+  function handleCardClick(card) {
+    setSelectedCard({ ...selectedCard, isOpen: true, element: card });
+  }
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(!isEditAvatarPopupOpen)
@@ -28,6 +31,7 @@ function App() {
     setEditAvatarPopupOpen(false)
     setEditProfilePopupOpen(false)
     setAddPlacePopupOpen(false)
+    setSelectedCard({...selectedCard, isOpen: false})
   }
 
   return (
@@ -37,6 +41,7 @@ function App() {
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
+        onCardClick={handleCardClick}
       />
       <Footer />
 
@@ -47,6 +52,7 @@ function App() {
         idForm="popup__form-profile"
         id="popup__Profile"
         title="Редактировать профиль"
+        saveName="Сохранить"
       >
         <label className="popup__form-field">
           <input
@@ -67,6 +73,7 @@ function App() {
         idForm="popup__form-photo"
         name="popup__form"
         title="Новое место"
+        saveName="Создать"
       >
         <label className="popup__form-field">
           <input name="photoText" className="popup__input" id="popup__photoText-input" required minlength="2"
@@ -85,6 +92,7 @@ function App() {
         idForm="popup__form-avatar"
         name="popup__form"
         title="Обновить аватар"
+        saveName="Сохранить"
       >
         <label className="popup__form-field">
           <input name="avatarLink" className="popup__input" id="popup__avatarLink-input" required
@@ -105,13 +113,9 @@ function App() {
         <div className="popup__overlay" id="popup__overlay-deleteCard"></div>
       </div>
 
-      <ImagePopup />
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
-      <template id="cardTemplate">
-        <article className="element">
-          <img className="element__image" src="#" alt="Ваши-Фото" />
-        </article>
-      </template>
+
     </div>
   );
 }
