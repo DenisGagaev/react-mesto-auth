@@ -56,13 +56,13 @@ function App() {
       >
         <label className="popup__form-field">
           <input
-            className="popup__input" type="text" required minlength="2" maxlength="40" id="popup__name-input"
-            value="" name="name" placeholder="Ваше имя" />
+            className="popup__input" type="text" required minLength="2" maxLength="40" id="popup__name-input"
+            name="name" placeholder="Ваше имя" />
         </label>
         <label className="popup__form-field">
           <input
-            className="popup__input" type="text" required minlength="2" maxlength="200" id="popup__text-input"
-            value="" name="about" placeholder="О Вас" />
+            className="popup__input" type="text" required minLength="2" maxLength="200" id="popup__text-input"
+            name="about" placeholder="О Вас" />
         </label>
       </PopupWithForm>
 
@@ -76,8 +76,8 @@ function App() {
         saveName="Создать"
       >
         <label className="popup__form-field">
-          <input name="photoText" className="popup__input" id="popup__photoText-input" required minlength="2"
-            maxlength="30" placeholder="Название карточки" type="text" />
+          <input name="photoText" className="popup__input" id="popup__photoText-input" required minLength="2"
+            maxLength="30" placeholder="Название карточки" type="text" />
         </label>
         <label className="popup__form-field">
           <input name="photoLink" className="popup__input" id="popup__photoLink-input" required
@@ -100,21 +100,7 @@ function App() {
         </label>
       </PopupWithForm>
 
-      <div className="popup" id="popap__deleteCard">
-        <div className="popup__container">
-          <button type="button" aria-label="закрыть попап" className="popup__close" id="popupDeleteClose"></button>
-          <h2 className="popup__header popup__header_margin">Вы уверены?</h2>
-          <form className="popup__form" name="popup__form" id="popup__form-delete" novalidate>
-            <fieldset className="popup__set">
-              <button type="submit" className="popup__button">Да</button>
-            </fieldset>
-          </form>
-        </div>
-        <div className="popup__overlay" id="popup__overlay-deleteCard"></div>
-      </div>
-
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-
 
     </div>
   );
