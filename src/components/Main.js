@@ -49,6 +49,7 @@ function Main(props) {
       <section className="elements content__elements">
         {cards.map((card) => (
           <Card
+            key={card._id}
             card={card}
             onCardClick={props.onCardClick}
             likeCounter={card.likes.length}
