@@ -1,4 +1,5 @@
 import React from "react";
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -23,7 +24,7 @@ function App() {
   const [isCardDelete, setIsCardDelete] = React.useState(false);
   const [isDataLoad, setIsDataLoad] = React.useState(false);
 
-  let isHaveAccount = false;
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   React.useEffect(() => {
     api.getUserInfo()
@@ -126,31 +127,61 @@ function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header isHaveAccount={isHaveAccount} />
-        {isHaveAccount ? <Login /> : <Register />}
-        {/* <Main
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          onCardDelete={handleCardDelete}
-          onCardLike={handleCardLike}
-          cards={cards}
-        /> */}
-        <Footer />
-        <InfoTooltip isDataLoad={isDataLoad} onClose={closeAllPopups} />
-        <EditProfilePopup isDataLoad={isDataLoad} onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
-        <EditAvatarPopup isDataLoad={isDataLoad} onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
-        <AddPlacePopup isDataLoad={isDataLoad} onAddCard={handleAddPlaceSubmit} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-        <PopupWithForm
-          onClose={closeAllPopups}
-          isOpen={isCardDelete}
-          name="popup__form"
-          id="popap__deleteCard"
-          title="Вы уверены?"
-          saveName="Да">
-        </PopupWithForm>
+        <Routes>
+          <Route path="/cards" element={
+            <>
+            <Header loggedIn={loggedIn} />
+             <Main
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onEditAvatar={handleEditAvatarClick}
+              onCardClick={handleCardClick}
+              onCardDelete={handleCardDelete}
+              onCardLike={handleCardLike}
+              cards={cards}
+            />
+            <Footer />
+
+            // <EditProfilePopup isDataLoad={isDataLoad} onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+            // <EditAvatarPopup isDataLoad={isDataLoad} onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
+            // <AddPlacePopup isDataLoad={isDataLoad} onAddCard={handleAddPlaceSubmit} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
+            // <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+            // <PopupWithForm
+              onClose={closeAllPopups}
+              isOpen={isCardDelete}
+              name="popup__form"
+              id="popap__deleteCard"
+              title="Вы уверены?"
+              saveName="Да">
+            </PopupWithForm>
+            </>
+          } />
+
+          <Route path="/sign-up" element={
+            <>
+            <Header loggedIn={loggedIn} />
+            <Register />
+            <InfoTooltip isDataLoad={isDataLoad} onClose={closeAllPopups} />
+            </>
+          }
+          />
+
+          <Route path="/sign-in" element={
+            <>
+            <Header loggedIn={loggedIn} />
+            <Login />
+            <InfoTooltip />
+            </>
+          }
+          />
+          
+          <Route path="/*" element={
+            <>
+            {loggedIn ? <Navigate replace to="/cards" /> : <Navigate to="/sign-in" />}
+            </>
+          }
+          />
+        </Routes>
       </CurrentUserContext.Provider>
     </div>
   );
