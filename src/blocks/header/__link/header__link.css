@@ -1,0 +1,21 @@
+.header__link {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 0;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.header__link:hover {
+    opacity: .6;
+}
+
+.header__link:visited {
+    color: #fff;
+}
+
+.header__link:active {
+    text-decoration: underline;
+}

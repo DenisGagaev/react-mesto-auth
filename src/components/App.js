@@ -1,9 +1,10 @@
-import React from "react";
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithForm from "./PopupWithForm";
+//import PopupWithForm from "./PopupWithForm";
 import ImagePopup from './ImagePopup';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
@@ -13,32 +14,49 @@ import AddPlacePopup from './AddPlacePopup';
 import Login from "./Login";
 import Register from './Register';
 import InfoTooltip from './InfoTooltip';
+import * as auth from '../utils/auth';
 
 function App() {
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({ isOpen: false, element: {} });
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [cards, setCards] = React.useState([]);
-  const [isCardDelete, setIsCardDelete] = React.useState(false);
-  const [isDataLoad, setIsDataLoad] = React.useState(false);
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({ isOpen: false, element: {} });
+  const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
+  const [isCardDelete, setIsCardDelete] = useState(false);
+  const [isDataLoad, setIsDataLoad] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
+  const [isRegisterStatusSuccess, setIsRegisterStatusSuccess] = useState(false);
+  const [isRegisterPopupOpen, setRegisterPopupOpen] = useState(false);
 
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const initialData = {
+    email: '',
+    password: '',
+  }
 
-  React.useEffect(() => {
+  const [profileData, setProfileData] = useState(initialData);
+
+  useEffect(() => {
     api.getUserInfo()
       .then(res => { setCurrentUser(res); })
       .catch(err => { console.log(err); })
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     api.getInitialCards()
       .then(initialCards => {
         setCards(initialCards);
       })
       .catch(err => { console.log(err) });
   }, []);
+
+  function handleRegisterStatus() {
+    setIsRegisterStatusSuccess(!isRegisterStatusSuccess);
+  }
+
+  function handleRegisterPopupShow() {
+    setRegisterPopupOpen(!isRegisterPopupOpen);
+  }
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -124,60 +142,126 @@ function App() {
       .finally(() => { setIsDataLoad(false) });
   }
 
+  const history = useNavigate();
+
+  // const tokenCheck = () => {
+  //   const jwt = localStorage.getItem('jwt');
+
+  //   if (jwt) {
+  //     auth.checkToken(jwt)
+  //       .then((res) => {
+  //         if (res) {
+  //           setProfileData({
+  //             email: res.email,
+  //             password: res.password
+  //           })
+  //           setLoggedIn(true)
+  //         }
+  //       })
+  //       .catch(() => history.push('/sign-in'));
+  //   }
+  // };
+
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      auth.checkToken(jwt)
+        .then(data => {
+          if (data) {
+            // setEmail(data.data.email);
+            setLoggedIn(true)
+            // history.push('/');
+          }
+        })
+    }
+  }, [history]);
+
+  function handleLogin({ email, password }) {
+    auth.login(email, password)
+      .then(res => {
+        // if (!res || res.statusCode === 400) throw new Error('Что-то пошло не так');
+        if (res.token) {
+          setLoggedIn(true);
+          // setProfileData({
+          //   email: res.user.email,
+          //   password: res.user.password
+          // })
+          localStorage.setItem('jwt', res.token);
+          history.push('/')
+        }
+      })
+  }
+
+  function handleRegister({ email, password }) {
+    auth.register(email, password)
+      .then(data => {
+        if (data) {
+          handleRegisterStatus(true)
+          handleRegisterPopupShow(true);
+          history.push('/sign-in');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  const handleSignOut = () => {
+    localStorage.removeItem('jwt');
+    setProfileData(initialData);
+    setLoggedIn(false);
+    history.push('/sign-in');
+  }
+
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
+        <Header loggedIn={loggedIn} onSignOut={handleSignOut} />
         <Routes>
           <Route path="/cards" element={
-            <>
-            <Header loggedIn={loggedIn} />
-             <Main
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-              onCardClick={handleCardClick}
-              onCardDelete={handleCardDelete}
-              onCardLike={handleCardLike}
-              cards={cards}
-            />
-            <Footer />
+            <ProtectedRoute
+              loggedIn={loggedIn}
+              element={
+                <Footer />
+              }>
+                <Footer />
+              {/* <Main
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  onCardClick={handleCardClick}
+                  onCardDelete={handleCardDelete}
+                  onCardLike={handleCardLike}
+                  cards={cards}
+                />
+                <Footer />
 
-            // <EditProfilePopup isDataLoad={isDataLoad} onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
-            // <EditAvatarPopup isDataLoad={isDataLoad} onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
-            // <AddPlacePopup isDataLoad={isDataLoad} onAddCard={handleAddPlaceSubmit} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
-            // <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-            // <PopupWithForm
-              onClose={closeAllPopups}
-              isOpen={isCardDelete}
-              name="popup__form"
-              id="popap__deleteCard"
-              title="Вы уверены?"
-              saveName="Да">
-            </PopupWithForm>
-            </>
+                <EditProfilePopup isDataLoad={isDataLoad} onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+                <EditAvatarPopup isDataLoad={isDataLoad} onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
+                <AddPlacePopup isDataLoad={isDataLoad} onAddCard={handleAddPlaceSubmit} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
+                <ImagePopup card={selectedCard} onClose={closeAllPopups} /> */}
+            </ProtectedRoute>
           } />
 
           <Route path="/sign-up" element={
             <>
-            <Header loggedIn={loggedIn} />
-            <Register />
-            <InfoTooltip isDataLoad={isDataLoad} onClose={closeAllPopups} />
+              <Register />
+              <InfoTooltip isDataLoad={isDataLoad} onClose={closeAllPopups} />
             </>
           }
           />
 
           <Route path="/sign-in" element={
             <>
-            <Header loggedIn={loggedIn} />
-            <Login />
-            <InfoTooltip />
+              <Login />
+              <InfoTooltip />
             </>
           }
           />
-          
+
           <Route path="/*" element={
             <>
-            {loggedIn ? <Navigate replace to="/cards" /> : <Navigate to="/sign-in" />}
+              {loggedIn ? <Navigate replace to="/cards" /> : <Navigate to="/sign-in" />}
             </>
           }
           />
