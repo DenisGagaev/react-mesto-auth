@@ -9,6 +9,9 @@ import EditProfilePopup from './EditProfilePopup';
 import api from "../utils/api";
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import Login from "./Login";
+import Register from './Register';
+import InfoTooltip from './InfoTooltip';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
@@ -20,6 +23,7 @@ function App() {
   const [isCardDelete, setIsCardDelete] = React.useState(false);
   const [isDataLoad, setIsDataLoad] = React.useState(false);
 
+  let isHaveAccount = false;
 
   React.useEffect(() => {
     api.getUserInfo()
@@ -122,8 +126,9 @@ function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header />
-        <Main
+        <Header isHaveAccount={isHaveAccount} />
+        {isHaveAccount ? <Login /> : <Register />}
+        {/* <Main
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
@@ -131,9 +136,9 @@ function App() {
           onCardDelete={handleCardDelete}
           onCardLike={handleCardLike}
           cards={cards}
-        />
+        /> */}
         <Footer />
-
+        <InfoTooltip isDataLoad={isDataLoad} onClose={closeAllPopups} />
         <EditProfilePopup isDataLoad={isDataLoad} onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
         <EditAvatarPopup isDataLoad={isDataLoad} onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
         <AddPlacePopup isDataLoad={isDataLoad} onAddCard={handleAddPlaceSubmit} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
