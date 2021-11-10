@@ -1,0 +1,5 @@
+.header__user-menu {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}

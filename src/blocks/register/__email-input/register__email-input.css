@@ -2,12 +2,17 @@
     background-color: transparent;
     color: #fff;
     border: 0;
-    border-bottom: 2px solid #fff;
-    outline: 0;
+    border-bottom: 2px solid #ccc;
+    outline: none;
     padding: 0 0 13px;
     margin: 0;
 }
 
 .register__email-input::placeholder {
-    color: #fff;
+    color: #ccc;
+}
+
+.register__email-input:-webkit-autofill {
+    -webkit-text-fill-color: #ccc;
+    -webkit-box-shadow: 0 0 0px 1000px #000 inset;
 }
