@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/DenisGagaev/react-mesto-auth.git/static/css/main.a8fc7385.chunk.css",
+    "main.js": "/DenisGagaev/react-mesto-auth.git/static/js/main.5f083f75.chunk.js",
+    "main.js.map": "/DenisGagaev/react-mesto-auth.git/static/js/main.5f083f75.chunk.js.map",
+    "runtime-main.js": "/DenisGagaev/react-mesto-auth.git/static/js/runtime-main.88e8625c.js",
+    "runtime-main.js.map": "/DenisGagaev/react-mesto-auth.git/static/js/runtime-main.88e8625c.js.map",
+    "static/js/2.38fcce73.chunk.js": "/DenisGagaev/react-mesto-auth.git/static/js/2.38fcce73.chunk.js",
+    "static/js/2.38fcce73.chunk.js.map": "/DenisGagaev/react-mesto-auth.git/static/js/2.38fcce73.chunk.js.map",
+    "static/js/3.f54ecb30.chunk.js": "/DenisGagaev/react-mesto-auth.git/static/js/3.f54ecb30.chunk.js",
+    "static/js/3.f54ecb30.chunk.js.map": "/DenisGagaev/react-mesto-auth.git/static/js/3.f54ecb30.chunk.js.map",
+    "index.html": "/DenisGagaev/react-mesto-auth.git/index.html",
+    "static/css/main.a8fc7385.chunk.css.map": "/DenisGagaev/react-mesto-auth.git/static/css/main.a8fc7385.chunk.css.map",
+    "static/js/2.38fcce73.chunk.js.LICENSE.txt": "/DenisGagaev/react-mesto-auth.git/static/js/2.38fcce73.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/DenisGagaev/react-mesto-auth.git/static/media/success.1b6082f8.svg",
+    "static/media/logo.03b78ada.svg": "/DenisGagaev/react-mesto-auth.git/static/media/logo.03b78ada.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.88e8625c.js",
+    "static/js/2.38fcce73.chunk.js",
+    "static/css/main.a8fc7385.chunk.css",
+    "static/js/main.5f083f75.chunk.js"
+  ]
+}
