@@ -28,9 +28,9 @@
 * Приязка сайта к серверу для сохранения данных пользователя. ***Реализовано***
 * Личный кабинет, авторизация через регистрацию ***Реализовано частично***
 
-#[Ссылка на страницу GH](https://denisgagaev.github.io/mesto-react-auth/)
+#[Ссылка на страницу GH](https://denisgagaev.github.io/react-mesto-auth/)
 
 ```
-Сверстал Гагаев Денис.
+Сверстал и написал Гагаев Денис.
 ```
 [npm]: https://github.com/DenisGagaev/mesto/blob/main/src/images/webpack_original_wordmark_logo_icon_146301.png?raw=true
