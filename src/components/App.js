@@ -32,20 +32,18 @@ function App() {
   const [isDataLoad, setIsDataLoad] = useState(false);
   const [selectedCard, setSelectedCard] = useState({ isOpen: false, element: {} });
   const [selectedCardDelete, setSelectedCardDelete] = useState({ element: {} });
-
+  //Получение данных профиля и карточек 
+  
   useEffect(() => {
-    api.getUserInfo()
-      .then(res => { setCurrentUser(res); })
-      .catch(err => { console.log(err); })
-  }, []);
-
-  useEffect(() => {
-    api.getInitialCards()
-      .then(initialCards => {
-        setCards(initialCards);
-      })
-      .catch(err => { console.log(err) });
-  }, []);
+    if (loggedIn) {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+    .then(([userData, initialCards]) => {
+      setCurrentUser(userData);
+      setCards(initialCards);
+    })
+      .catch(err => { console.log(err); });
+  }
+  }, [loggedIn]);
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');

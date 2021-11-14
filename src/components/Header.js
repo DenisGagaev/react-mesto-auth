@@ -23,6 +23,8 @@ function Header({ email, onSignOut }) {
           <p className='header__email'>{email}</p>
           <button
             onClick={() => {
+              // не забыть ИСПРАВИТЬ!!
+              //Вызов данной функции не несёт никакого смысла. Она просто меняет значение стейта isClicked, который нигде не используется. Вызов функции, саму функцию и стейт isClicked можно удалить
               onSignOut();
               handleClickMenu();
             }}
